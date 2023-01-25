@@ -51,3 +51,67 @@ console.log(tooManyScoops({flavor: "vanila2", scoops : 5}))
 
 
 /**인터페이스 확장 */
+interface Sundae extends IceCream {
+    sauce: 'chocolate' | 'caramel' | 'strawberry';
+    nuts?: boolean;
+    whippendCream?: boolean;
+    instructions?: boolean;
+}
+
+let mySundaeIceCream: Sundae = {
+    flavor: "vanila2",
+    scoops: 2,
+    sauce: 'caramel',
+    nuts: true
+}
+
+function tooManyScoopsSundae(dessert: Sundae) {
+    if(dessert.scoops >=4){
+        return dessert.scoops + " is too many"
+    }else {
+        return "your order will be ready soon!"
+    }
+}
+
+console.log(tooManyScoopsSundae({flavor: "vanila", scoops: 5, sauce: 'caramel'}))
+
+
+/**인터페이스를 사용하는 다른 방법 */
+//인덱싱
+interface IceCreamArray {
+    [index: number]: string;
+}
+
+let myIceCreamArray: IceCreamArray;
+myIceCreamArray= ['chocolate', 'vanila', 'strawberry'];
+let myStr: string = myIceCreamArray[1]
+console.log(myStr)
+
+//인터페이스를 사용하여 Javascript API 설명 
+const fetchURL = 'https://jsonplaceholder.typicode.com/posts'
+
+interface Post {
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
+}
+
+async function fetchPosts(url: string){
+    let response = await fetch(url);
+    let body = await response.json();
+    return body as Post [];
+}
+
+async function showPost() {
+    let posts = await fetchPosts(fetchURL);
+    // Display the contents of the first item in the response
+    let post = posts[0];
+    console.log('Post #' + post.id)
+    // If the userId is 1, then display a note that it's an administrator
+    console.log('Author: ' + (post.userId === 1 ? "Administrator" : post.userId.toString()))
+    console.log('Title: ' + post.title)
+    console.log('Body: ' + post.body)
+}
+
+showPost();
